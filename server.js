@@ -426,3 +426,7 @@ function updateEmployeeRole() {
     });
 }
 
+// close connection when application exits
+process.on("exit", () => {
+    connection.end();
+});
