@@ -5,9 +5,9 @@ const cfonts = require('cfonts');
 // connection to mySQL
 const connection = mysql.createConnection({
     host: "localhost",
-    port: 3001,
+    port: 3306,
     user: "root",
-    password: "",
+    password: "Kirby.1128",
     database: "employeeTracker_db",
 });
 
@@ -117,7 +117,7 @@ function viewAllDepartments() {
 
 // function to view all roles
 function viewAllRoles() {
-    const query = "SELECT roles.title, roles.id, departments.department_name, roles.salary from roles join departments on roles.department_id = departments.id";
+    const query = "SELECT roles.title, roles.id, departments.department_name, roles.salary from roles left join departments on roles.department_id = departments.id";
     connection.query(query, (err, res) => {
         if (err) throw err;
         console.table(res);
@@ -186,21 +186,22 @@ function addRole() {
                     name: "department",
                     message: "Select the department for the new role:",
                     choices: res.map(
-                        (department) => department.department_name
+                        (department) => ({
+                            name: department.department_name,
+                            value: department.id
+                        })
                     ),
                 },
             ])
             .then((answers) => {
-                const department = res.find(
-                    (department) => department.name === answers.department
-                );
+                
                 const query = "INSERT INTO roles SET ?";
                 connection.query(
                     query,
                     {
                         title: answers.title,
                         salary: answers.salary,
-                        department_id: department,
+                        department_id: answers.department,
                     },
                     (err, res) => {
                         if (err) throw err;
@@ -238,7 +239,7 @@ function addEmployee() {
                 }
 
                 const managers = results.map(({ id, name }) => ({
-                    name,
+                    name: name,
                     value: id,
                 }));
 

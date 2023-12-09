@@ -26,13 +26,13 @@ VALUES
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES
-('Greg', 'Pelkola', 1, 1),
-('Dan', 'Neck', 2, 2),
-('Dave', 'Olson', 3, 3),
-('Cory', 'Lin', 4, 4),
-('Dwayne', 'Johnson', 5, 5),
-('Rick', 'Roll', 6, 6),
-('Frodo', 'Baggins', 7, 7),
-('Darth', 'Vader', 8, 8),
-('I used to be an', 'adventureer', 9, 9),
-('Dominic', 'Torretto vs the world', 10, 10);
+('Greg', 'Pelkola', 1, NULL),
+('Dan', 'Neck', 2, 1),
+('Dave', 'Olson', 3, 1),
+('Cory', 'Lin', 4, 1),
+('Dwayne', 'Johnson', 5, 1),
+('Rick', 'Roll', 6, 5),
+('Frodo', 'Baggins', 7, 1),
+('Darth', 'Vader', 8, 1),
+('I used to be an', 'adventureer', 9, 1),
+('Dominic', 'Torretto vs the world', 10, 1);
