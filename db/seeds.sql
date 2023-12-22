@@ -24,7 +24,7 @@ VALUES
 ('Legal Manager', 95000.00, 9),
 ('Maintenance Manager', 135000.00, 10);
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
+INSERT INTO employees (first_name, last_name, role_id, manager_id)
 VALUES
 ('Greg', 'Pelkola', 1, NULL),
 ('Dan', 'Neck', 2, 1),

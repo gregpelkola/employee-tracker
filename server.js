@@ -127,21 +127,29 @@ function viewAllRoles() {
 }
 
 // function to view all employees
+// function to view all employees
 function viewAllEmployees() {
     const query = `
-    SELECT e.id, e.first_name, e.last_name, r.title, d.department_name, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager_name
-    FROM employee e
+    SELECT e.id, e.first_name, e.last_name, r.title AS role, d.department_name, r.salary, CONCAT(m.first_name, ' ', m.last_name) AS manager_name
+    FROM employees e
     LEFT JOIN roles r ON e.role_id = r.id
     LEFT JOIN departments d ON r.department_id = d.id
-    LEFT JOIN employee m ON e.manager_id = m.id;
+    LEFT JOIN employees m ON e.manager_id = m.id;
     `;
     connection.query(query, (err, res) => {
         if (err) throw err;
+
+        // Log the raw data
+        console.log(res);
+
+        // Display the data in a table
         console.table(res);
+
         // restart the application
         start();
     });
 }
+
 
 // function to add department
 function addDepartment() {
@@ -231,7 +239,7 @@ function addEmployee() {
         }));
         // get list of employees from database to use as managers
         connection.query(
-            'SELECT id, CONCAT(first_name, " ", last_name) AS name FROM employee',
+            'SELECT id, CONCAT(first_name, " ", last_name) AS name FROM employees',
             (error, results) => {
                 if (error) {
                     console.error(error);
@@ -275,7 +283,7 @@ function addEmployee() {
                 .then((answers) => {
                     // insert employee into database
                     const sql =
-                    "INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)";
+                    "INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)";
                 const values = [
                     answers.firstName,
                     answers.lastName,
@@ -303,7 +311,7 @@ function addEmployee() {
 // function to add manager
 function addManager() {
     const queryDepartments = "SELECT * FROM departments";
-    const queryEmployees = "SELECT * FROM employee";
+    const queryEmployees = "SELECT * FROM employees";
 
     connection.query(queryDepartments, (err, resDepartments) => {
         if (err) throw err;
@@ -354,14 +362,14 @@ function addManager() {
                             answers.manager
                     );
                     const query =
-                        "UPDATE employee SET manager_id = ? WHERE id = ? AND role_id IN (SELECT id FROM roles WHERE department_id = ?)";
+                        "UPDATE employees SET manager_id = ? WHERE id = ? AND role_id IN (SELECT id FROM roles WHERE department_id = ?)";
                     connection.query(
                         query,
                         [manager.id, employee.id, department.id],
                         (err, res) => {
                             if (err) throw err;
                             console.log(
-                                `Added manager ${manager.first_name} ${manager.last_name} to employee ${employee.first_name} ${employee.last_name} in department ${department.department_name}!`
+                                `Added manager ${manager.first_name} ${manager.last_name} to employees ${employee.first_name} ${employee.last_name} in department ${department.department_name}!`
                             );
                             // restart the application
                             start();
@@ -375,7 +383,7 @@ function addManager() {
 // function to update employee role
 function updateEmployeeRole() {
     const queryEmployees =
-        "SELECT employee.id, employee.first_name, employee.last_name, roles.title FROM employee LEFT JOIN roles ON employee.role_id = roles.id";
+        "SELECT employee.id, employee.first_name, employee.last_name, roles.title FROM employees LEFT JOIN roles ON employee.role_id = roles.id";
     const queryRoles = "SELECT * FROM roles";
     connection.query(queryEmployees, (err, resEmployees) => {
         if (err) throw err;
@@ -409,7 +417,7 @@ function updateEmployeeRole() {
                         (role) => role.title === answers.role
                     );
                     const query =
-                        "UPDATE employee SET role_id = ? WHERE id = ?";
+                        "UPDATE employees SET role_id = ? WHERE id = ?";
                     connection.query(
                         query,
                         [role.id, employee.id],
