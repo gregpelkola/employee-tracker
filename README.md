@@ -42,6 +42,9 @@ Open a new terminal, in the command line run node server.js to launch the progam
 
 To add a screenshot, create an `assets/images` folder in your repository and upload your screenshot to it. Then, using the relative filepath, add it to your README using the following syntax:
 
+Walk Through:
+https://drive.google.com/file/d/1DQUCYW_LaDplz1-mM2DKVHBFzbap9Aro/view
+
 ![alt text](assets/images/emptracker.png)
 
     ```md
